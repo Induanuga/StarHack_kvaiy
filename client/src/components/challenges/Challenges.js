@@ -304,7 +304,8 @@ const Challenges = () => {
                 : 0;
 
               // Show a subtle "Recommended" badge only for top 3 AI picks
-              const isTopRecommendation = activeTab === "available" && index < 3;
+              const isTopRecommendation =
+                activeTab === "available" && index < 3;
 
               return (
                 <div

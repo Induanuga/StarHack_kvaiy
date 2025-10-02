@@ -18,6 +18,9 @@ import AuthOptions from "./components/auth/AuthOptions";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import CommunityChallenges from "./components/community/CommunityChallenges";
 import HealthcarePartners from "./components/healthcare/HealthcarePartners";
+import CorporateDashboard from "./components/corporate/CorporateDashboard";
+import AdminDashboard from "./components/analytics/AdminDashboard";
+import PublicHealthCampaigns from "./components/publicHealth/PublicHealthCampaigns";
 
 // Loading component
 const LoadingScreen = () => (
@@ -106,6 +109,30 @@ const AppContent = () => {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/corporate"
+              element={
+                <PrivateRoute>
+                  <CorporateDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/analytics"
+              element={
+                <PrivateRoute>
+                  <AdminDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/public-health"
+              element={
+                <PrivateRoute>
+                  <PublicHealthCampaigns />
+                </PrivateRoute>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         )}
@@ -116,15 +143,6 @@ const AppContent = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
-  );
-}
-
-export default App;
     <AuthProvider>
       <Router>
         <AppContent />

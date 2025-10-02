@@ -6,7 +6,7 @@ const User = require("../models/User");
 const Activity = require("../models/Activity");
 const Achievement = require("../models/Achievement");
 const UserAchievement = require("../models/UserAchievement");
-const MLService = require('../services/mlService');
+const MLService = require("../services/mlService");
 
 // Auth middleware
 const auth = require("../middleware/auth");
@@ -98,28 +98,29 @@ router.get("/", auth, async (req, res) => {
       })
     );
 
-    // AI-POWERED SORTING: Get ML predictions and sort challenges
+    // 🤖 ML USAGE HERE: AI-powered sorting of challenges
     try {
+      // Step 1: Analyze user's past behavior
       await MLService.analyzeUserBehavior(req.user.id);
+
+      // Step 2: Get ML predictions for which challenges user will complete
       const predictions = await MLService.predictChallenges(req.user.id);
 
-      // Create a map of challenge IDs to confidence scores
+      // predictions = [
+      //   { challenge: "id1", confidence: 85, reason: "Matches your interest in health" },
+      //   { challenge: "id2", confidence: 72, reason: "Based on your success rate" }
+      // ]
+
+      // Step 3: Create confidence score map
       const confidenceMap = new Map(
         predictions.map((pred) => [pred.challenge.toString(), pred.confidence])
       );
 
-      // Sort challenges: recommended first (by confidence), then by creation date
+      // Step 4: Sort challenges - highest ML confidence first
       challengesWithProgress.sort((a, b) => {
         const aConfidence = confidenceMap.get(a._id.toString()) || 0;
         const bConfidence = confidenceMap.get(b._id.toString()) || 0;
-
-        // Higher confidence first
-        if (bConfidence !== aConfidence) {
-          return bConfidence - aConfidence;
-        }
-
-        // If same confidence, newer first
-        return new Date(b.createdAt) - new Date(a.createdAt);
+        return bConfidence - aConfidence; // Higher confidence = shown first
       });
     } catch (mlError) {
       console.error("ML sorting error:", mlError);

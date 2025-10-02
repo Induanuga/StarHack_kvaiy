@@ -41,6 +41,9 @@ app.use("/api/family", require("./routes/family"));
 app.use("/api/ml", require("./routes/ml"));
 app.use("/api/community", require("./routes/community"));
 app.use("/api/healthcare", require("./routes/healthcare"));
+app.use("/api/corporate", require("./routes/corporate"));
+app.use("/api/analytics", require("./routes/analytics"));
+app.use("/api/public-health", require("./routes/publicHealth"));
 
 // Seed endpoint (for admin use)
 app.post("/api/admin/seed", async (req, res) => {

@@ -17,6 +17,7 @@ const Navbar = () => {
     { path: "/", label: "Dashboard", icon: "🏠" },
     { path: "/challenges", label: "Challenges", icon: "🎯" },
     { path: "/community", label: "Community", icon: "👥" },
+    { path: "/public-health", label: "Public Health", icon: "🌍" },
     { path: "/leaderboard", label: "Leaderboard", icon: "🏆" },
     { path: "/healthcare", label: "Healthcare", icon: "🏥" },
     { path: "/rewards", label: "Rewards", icon: "🎁" },
@@ -57,24 +58,22 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* User Profile & Logout */}
-          <div className="hidden md:flex items-center space-x-4">
-            <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-pink-50 px-4 py-2 rounded-full">
-              <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          {/* User Info & Logout - Simplified */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Link
+              to="/profile"
+              className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 rounded-xl transition-all"
+            >
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
-              <div className="text-left">
-                <p className="font-semibold text-gray-800 text-sm">
-                  {user?.username}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Level {user?.level || 1}
-                </p>
-              </div>
-            </div>
+              <span className="text-sm font-medium text-gray-700">
+                {user?.username}
+              </span>
+            </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-300 hover:scale-105 text-sm"
             >
               Logout
             </button>
@@ -130,20 +129,6 @@ const Navbar = () => {
             ))}
 
             <div className="pt-4 border-t border-gray-100">
-              <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl mb-2">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  {user?.username?.charAt(0).toUpperCase() || "U"}
-                </div>
-                <div className="text-left">
-                  <p className="font-semibold text-gray-800">
-                    {user?.username}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Level {user?.level || 1}
-                  </p>
-                </div>
-              </div>
-
               <button
                 onClick={handleLogout}
                 className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-300"
@@ -158,5 +143,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
 export default Navbar;
