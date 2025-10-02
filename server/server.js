@@ -38,6 +38,9 @@ app.use("/api/activities", require("./routes/activities"));
 app.use("/api/achievements", require("./routes/achievements"));
 app.use("/api/leaderboard", require("./routes/leaderboard"));
 app.use("/api/family", require("./routes/family"));
+app.use("/api/ml", require("./routes/ml"));
+app.use("/api/community", require("./routes/community"));
+app.use("/api/healthcare", require("./routes/healthcare"));
 
 // Seed endpoint (for admin use)
 app.post("/api/admin/seed", async (req, res) => {

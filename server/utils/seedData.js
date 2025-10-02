@@ -1,6 +1,6 @@
-const Challenge = require('../models/Challenge');
-const Achievement = require('../models/Achievement');
-const Reward = require('../models/Reward');
+const Challenge = require("../models/Challenge");
+const Achievement = require("../models/Achievement");
+const Reward = require("../models/Reward");
 
 const defaultChallenges = [
   // Daily Challenges
@@ -16,7 +16,7 @@ const defaultChallenges = [
     unit: "steps",
     icon: "🚶",
     color: "#10b981",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Water Intake",
@@ -30,7 +30,7 @@ const defaultChallenges = [
     unit: "glasses",
     icon: "💧",
     color: "#3b82f6",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Budget Tracker",
@@ -44,9 +44,9 @@ const defaultChallenges = [
     unit: "task",
     icon: "💰",
     color: "#f59e0b",
-    isActive: true
+    isActive: true,
   },
-  
+
   // Weekly Challenges
   {
     title: "Workout Warrior",
@@ -60,7 +60,7 @@ const defaultChallenges = [
     unit: "sessions",
     icon: "💪",
     color: "#ef4444",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Savings Goal",
@@ -74,7 +74,7 @@ const defaultChallenges = [
     unit: "dollars",
     icon: "🏦",
     color: "#8b5cf6",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Policy Review",
@@ -88,9 +88,9 @@ const defaultChallenges = [
     unit: "task",
     icon: "🛡️",
     color: "#06b6d4",
-    isActive: true
+    isActive: true,
   },
-  
+
   // Monthly Challenges
   {
     title: "Marathon Month",
@@ -104,7 +104,7 @@ const defaultChallenges = [
     unit: "km",
     icon: "🏃",
     color: "#ec4899",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Investment Start",
@@ -118,9 +118,9 @@ const defaultChallenges = [
     unit: "investment",
     icon: "📈",
     color: "#10b981",
-    isActive: true
+    isActive: true,
   },
-  
+
   // Community Challenges
   {
     title: "Family Fitness",
@@ -134,7 +134,7 @@ const defaultChallenges = [
     unit: "sessions",
     icon: "👨‍👩‍👧‍👦",
     color: "#f59e0b",
-    isActive: true
+    isActive: true,
   },
   {
     title: "Wellness Share",
@@ -148,9 +148,9 @@ const defaultChallenges = [
     unit: "shares",
     icon: "🤝",
     color: "#6366f1",
-    isActive: true
+    isActive: true,
   },
-  
+
   // Aktivo Integration
   {
     title: "Aktivo Score Boost",
@@ -164,8 +164,8 @@ const defaultChallenges = [
     unit: "points",
     icon: "⚡",
     color: "#f43f5e",
-    isActive: true
-  }
+    isActive: true,
+  },
 ];
 
 const defaultAchievements = [
@@ -179,7 +179,7 @@ const defaultAchievements = [
     requirement: "challenges_completed",
     threshold: 1,
     points: 100,
-    badge: "🥉"
+    badge: "🥉",
   },
   {
     title: "Health Enthusiast",
@@ -190,7 +190,7 @@ const defaultAchievements = [
     requirement: "challenges_completed",
     threshold: 10,
     points: 500,
-    badge: "🥈"
+    badge: "🥈",
   },
   {
     title: "Wellness Master",
@@ -201,9 +201,9 @@ const defaultAchievements = [
     requirement: "challenges_completed",
     threshold: 50,
     points: 2000,
-    badge: "🥇"
+    badge: "🥇",
   },
-  
+
   // Wealth Achievements
   {
     title: "Penny Saver",
@@ -214,7 +214,7 @@ const defaultAchievements = [
     requirement: "wealth_challenges",
     threshold: 1,
     points: 100,
-    badge: "💰"
+    badge: "💰",
   },
   {
     title: "Financial Guru",
@@ -225,9 +225,9 @@ const defaultAchievements = [
     requirement: "wealth_challenges",
     threshold: 20,
     points: 1500,
-    badge: "👑"
+    badge: "👑",
   },
-  
+
   // Milestone Achievements
   {
     title: "Level 10",
@@ -238,7 +238,7 @@ const defaultAchievements = [
     requirement: "level",
     threshold: 10,
     points: 1000,
-    badge: "🌟"
+    badge: "🌟",
   },
   {
     title: "Point Collector",
@@ -249,9 +249,9 @@ const defaultAchievements = [
     requirement: "total_points",
     threshold: 10000,
     points: 2000,
-    badge: "💫"
+    badge: "💫",
   },
-  
+
   // Social Achievements
   {
     title: "Team Player",
@@ -262,7 +262,7 @@ const defaultAchievements = [
     requirement: "social_challenges",
     threshold: 5,
     points: 500,
-    badge: "👥"
+    badge: "👥",
   },
   {
     title: "Community Leader",
@@ -273,8 +273,8 @@ const defaultAchievements = [
     requirement: "family_helped",
     threshold: 10,
     points: 3000,
-    badge: "🏅"
-  }
+    badge: "🏅",
+  },
 ];
 
 const defaultRewards = [
@@ -292,7 +292,7 @@ const defaultRewards = [
     expiryDays: 30,
     isActive: true,
     partnerName: "FitLife Gym",
-    termsAndConditions: "Valid for new memberships only"
+    termsAndConditions: "Valid for new memberships only",
   },
   {
     title: "Fitness Tracker",
@@ -306,9 +306,9 @@ const defaultRewards = [
     expiryDays: 60,
     isActive: true,
     partnerName: "TechFit",
-    termsAndConditions: "Subject to availability"
+    termsAndConditions: "Subject to availability",
   },
-  
+
   // Wealth Rewards
   {
     title: "Financial Consultation",
@@ -322,7 +322,7 @@ const defaultRewards = [
     expiryDays: 90,
     isActive: true,
     partnerName: "WealthWise",
-    termsAndConditions: "Book within 30 days"
+    termsAndConditions: "Book within 30 days",
   },
   {
     title: "$50 Cashback",
@@ -336,9 +336,9 @@ const defaultRewards = [
     expiryDays: 7,
     isActive: true,
     partnerName: "YouMatter",
-    termsAndConditions: "Processed within 5 business days"
+    termsAndConditions: "Processed within 5 business days",
   },
-  
+
   // Insurance Rewards
   {
     title: "Premium Discount",
@@ -352,9 +352,9 @@ const defaultRewards = [
     expiryDays: 180,
     isActive: true,
     partnerName: "SecureLife Insurance",
-    termsAndConditions: "Valid for policy renewal"
+    termsAndConditions: "Valid for policy renewal",
   },
-  
+
   // Lifestyle Rewards
   {
     title: "Coffee Gift Card",
@@ -368,7 +368,7 @@ const defaultRewards = [
     expiryDays: 90,
     isActive: true,
     partnerName: "Bean There",
-    termsAndConditions: "Valid at all locations"
+    termsAndConditions: "Valid at all locations",
   },
   {
     title: "Movie Tickets",
@@ -382,9 +382,9 @@ const defaultRewards = [
     expiryDays: 60,
     isActive: true,
     partnerName: "CineMax",
-    termsAndConditions: "Standard shows only"
+    termsAndConditions: "Standard shows only",
   },
-  
+
   // Premium Rewards
   {
     title: "YouMatter Premium",
@@ -398,8 +398,8 @@ const defaultRewards = [
     expiryDays: 30,
     isActive: true,
     partnerName: "YouMatter",
-    termsAndConditions: "Auto-renew can be cancelled anytime"
-  }
+    termsAndConditions: "Auto-renew can be cancelled anytime",
+  },
 ];
 
 const seedDatabase = async () => {
@@ -408,20 +408,25 @@ const seedDatabase = async () => {
     await Challenge.deleteMany({});
     await Achievement.deleteMany({});
     await Reward.deleteMany({});
-    
+
     // Insert default data
     await Challenge.insertMany(defaultChallenges);
     await Achievement.insertMany(defaultAchievements);
     await Reward.insertMany(defaultRewards);
-    
-    console.log('✅ Database seeded successfully!');
+
+    console.log("✅ Database seeded successfully!");
     console.log(`📋 ${defaultChallenges.length} challenges created`);
     console.log(`🏆 ${defaultAchievements.length} achievements created`);
     console.log(`🎁 ${defaultRewards.length} rewards created`);
   } catch (error) {
-    console.error('❌ Error seeding database:', error);
+    console.error("❌ Error seeding database:", error);
     throw error;
   }
 };
 
-module.exports = { seedDatabase, defaultChallenges, defaultAchievements, defaultRewards };
+module.exports = {
+  seedDatabase,
+  defaultChallenges,
+  defaultAchievements,
+  defaultRewards,
+};

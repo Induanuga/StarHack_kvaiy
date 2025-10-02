@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Leaderboard = () => {
-  const [activeTab, setActiveTab] = useState('overall');
-  const [period, setPeriod] = useState('all');
+  const [activeTab, setActiveTab] = useState("overall");
+  const [period, setPeriod] = useState("all");
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [currentUserRank, setCurrentUserRank] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,10 +14,10 @@ const Leaderboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const config = {
-        headers: { 'x-auth-token': token },
-        params: activeTab === 'overall' ? { period } : {}
+        headers: { "x-auth-token": token },
+        params: activeTab === "overall" ? { period } : {},
       };
 
       const res = await axios.get(
@@ -31,36 +31,36 @@ const Leaderboard = () => {
       }
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching leaderboard:', err);
+      console.error("Error fetching leaderboard:", err);
       setLoading(false);
     }
   };
 
   const tabs = [
-    { id: 'overall', label: 'Overall', icon: '🏆' },
-    { id: 'health', label: 'Health', icon: '💪' },
-    { id: 'family', label: 'Family Groups', icon: '👨‍👩‍👧‍👦' }
+    { id: "overall", label: "Overall", icon: "🏆" },
+    { id: "health", label: "Health", icon: "💪" },
+    { id: "family", label: "Family Groups", icon: "👨‍👩‍👧‍👦" },
   ];
 
   const periods = [
-    { value: 'all', label: 'All Time' },
-    { value: 'monthly', label: 'This Month' },
-    { value: 'weekly', label: 'This Week' },
-    { value: 'daily', label: 'Today' }
+    { value: "all", label: "All Time" },
+    { value: "monthly", label: "This Month" },
+    { value: "weekly", label: "This Week" },
+    { value: "daily", label: "Today" },
   ];
 
   const getRankColor = (rank) => {
-    if (rank === 1) return 'from-yellow-400 to-yellow-600';
-    if (rank === 2) return 'from-gray-300 to-gray-500';
-    if (rank === 3) return 'from-orange-400 to-orange-600';
-    return 'from-purple-500 to-pink-500';
+    if (rank === 1) return "from-yellow-400 to-yellow-600";
+    if (rank === 2) return "from-gray-300 to-gray-500";
+    if (rank === 3) return "from-orange-400 to-orange-600";
+    return "from-purple-500 to-pink-500";
   };
 
   const getRankEmoji = (rank) => {
-    if (rank === 1) return '🥇';
-    if (rank === 2) return '🥈';
-    if (rank === 3) return '🥉';
-    return '🏅';
+    if (rank === 1) return "🥇";
+    if (rank === 2) return "🥈";
+    if (rank === 3) return "🥉";
+    return "🏅";
   };
 
   if (loading) {
@@ -79,7 +79,9 @@ const Leaderboard = () => {
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
             🏆 Leaderboard
           </h1>
-          <p className="text-gray-600 text-lg">Compete with others and reach the top!</p>
+          <p className="text-gray-600 text-lg">
+            Compete with others and reach the top!
+          </p>
         </div>
 
         {/* Tabs */}
@@ -89,8 +91,8 @@ const Leaderboard = () => {
               key={tab.id}
               className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-300 ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
@@ -101,15 +103,15 @@ const Leaderboard = () => {
         </div>
 
         {/* Period Filter (only for overall) */}
-        {activeTab === 'overall' && (
+        {activeTab === "overall" && (
           <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
             {periods.map((p) => (
               <button
                 key={p.value}
                 className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
                   period === p.value
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                    ? "bg-purple-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-100"
                 }`}
                 onClick={() => setPeriod(p.value)}
               >
@@ -138,11 +140,15 @@ const Leaderboard = () => {
             <div
               key={entry.userId || entry.groupId || index}
               className={`flex items-center gap-4 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                entry.isCurrentUser ? 'bg-purple-50' : ''
+                entry.isCurrentUser ? "bg-purple-50" : ""
               }`}
             >
               {/* Rank */}
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getRankColor(entry.rank)} flex items-center justify-center text-white font-bold shadow-md flex-shrink-0`}>
+              <div
+                className={`w-12 h-12 rounded-full bg-gradient-to-r ${getRankColor(
+                  entry.rank
+                )} flex items-center justify-center text-white font-bold shadow-md flex-shrink-0`}
+              >
                 {entry.rank <= 3 ? getRankEmoji(entry.rank) : entry.rank}
               </div>
 
@@ -158,13 +164,18 @@ const Leaderboard = () => {
                 <h3 className="font-bold text-gray-800 truncate">
                   {entry.username || entry.name}
                   {entry.isCurrentUser && (
-                    <span className="ml-2 text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">You</span>
+                    <span className="ml-2 text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">
+                      You
+                    </span>
                   )}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  {activeTab === 'overall' && `Level ${entry.level} • ${entry.challengesCompleted} challenges`}
-                  {activeTab === 'health' && `${entry.healthChallenges} health challenges`}
-                  {activeTab === 'family' && `${entry.memberCount} members • Level ${entry.groupLevel}`}
+                  {activeTab === "overall" &&
+                    `Level ${entry.level} • ${entry.challengesCompleted} challenges`}
+                  {activeTab === "health" &&
+                    `${entry.healthChallenges} health challenges`}
+                  {activeTab === "family" &&
+                    `${entry.memberCount} members • Level ${entry.groupLevel}`}
                 </p>
               </div>
 

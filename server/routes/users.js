@@ -172,4 +172,26 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+// @route   PUT /api/users/profile
+// @desc    Update user profile
+// @access  Private
+router.put("/profile", auth, async (req, res) => {
+  try {
+    const { profile } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    if (profile.firstName) user.profile.firstName = profile.firstName;
+    if (profile.lastName) user.profile.lastName = profile.lastName;
+    if (profile.bio !== undefined) user.profile.bio = profile.bio;
+
+    await user.save();
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 module.exports = router;
