@@ -16,7 +16,6 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import AuthOptions from "./components/auth/AuthOptions";
 import PrivateRoute from "./components/routing/PrivateRoute";
-import AIRecommendations from "./components/ml/AIRecommendations";
 import CommunityChallenges from "./components/community/CommunityChallenges";
 import HealthcarePartners from "./components/healthcare/HealthcarePartners";
 
@@ -92,14 +91,6 @@ const AppContent = () => {
               }
             />
             <Route
-              path="/ai-recommendations"
-              element={
-                <PrivateRoute>
-                  <AIRecommendations />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="/community"
               element={
                 <PrivateRoute>
@@ -125,6 +116,15 @@ const AppContent = () => {
 
 function App() {
   return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;
     <AuthProvider>
       <Router>
         <AppContent />

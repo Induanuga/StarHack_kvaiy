@@ -16,7 +16,6 @@ const Navbar = () => {
   const navLinks = [
     { path: "/", label: "Dashboard", icon: "🏠" },
     { path: "/challenges", label: "Challenges", icon: "🎯" },
-    { path: "/ai-recommendations", label: "AI Picks", icon: "🤖" },
     { path: "/community", label: "Community", icon: "👥" },
     { path: "/leaderboard", label: "Leaderboard", icon: "🏆" },
     { path: "/healthcare", label: "Healthcare", icon: "🏥" },
@@ -159,4 +158,5 @@ const Navbar = () => {
   );
 };
 
+export default Navbar;
 export default Navbar;

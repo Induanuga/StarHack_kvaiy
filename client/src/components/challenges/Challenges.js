@@ -30,6 +30,7 @@ const Challenges = () => {
         if (filter !== "all") config.params.category = filter;
         if (typeFilter !== "all") config.params.type = typeFilter;
 
+        // This endpoint now returns AI-sorted challenges automatically
         const res = await axios.get(
           "http://localhost:5000/api/challenges",
           config
@@ -181,6 +182,10 @@ const Challenges = () => {
           <p className="text-gray-600 text-lg">
             Take on challenges and earn rewards!
           </p>
+          {/* Subtle AI indicator */}
+          <p className="text-xs text-gray-400 mt-1">
+            ✨ Personalized just for you
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -284,26 +289,37 @@ const Challenges = () => {
           </>
         )}
 
-        {/* Challenges Grid */}
+        {/* Challenges Grid - Now AI-sorted automatically */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {(activeTab === "available" ? challenges : challenges)
-            .map((item) => {
+            .map((item, index) => {
               const challenge =
                 activeTab === "my-challenges" ? item.challenge : item;
               const progress = activeTab === "my-challenges" ? item : null;
 
-              // Safety check for challenge object
               if (!challenge) return null;
 
               const progressPercentage = progress
                 ? Math.round((progress.progress / progress.target) * 100)
                 : 0;
 
+              // Show a subtle "Recommended" badge only for top 3 AI picks
+              const isTopRecommendation = activeTab === "available" && index < 3;
+
               return (
                 <div
                   key={challenge._id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative"
                 >
+                  {/* Subtle recommendation indicator */}
+                  {isTopRecommendation && (
+                    <div className="absolute top-2 right-2 z-10">
+                      <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+                        ⭐ Popular
+                      </span>
+                    </div>
+                  )}
+
                   {/* Card Header */}
                   <div
                     className="p-6 relative"

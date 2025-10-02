@@ -6,6 +6,7 @@ const User = require("../models/User");
 const Activity = require("../models/Activity");
 const Achievement = require("../models/Achievement");
 const UserAchievement = require("../models/UserAchievement");
+const MLService = require('../services/mlService');
 
 // Auth middleware
 const auth = require("../middleware/auth");
@@ -65,7 +66,7 @@ async function checkAchievements(userId) {
 }
 
 // @route   GET /api/challenges
-// @desc    Get all active challenges
+// @desc    Get all active challenges (AI-powered sorting)
 // @access  Private
 router.get("/", auth, async (req, res) => {
   try {
@@ -96,6 +97,34 @@ router.get("/", auth, async (req, res) => {
         };
       })
     );
+
+    // AI-POWERED SORTING: Get ML predictions and sort challenges
+    try {
+      await MLService.analyzeUserBehavior(req.user.id);
+      const predictions = await MLService.predictChallenges(req.user.id);
+
+      // Create a map of challenge IDs to confidence scores
+      const confidenceMap = new Map(
+        predictions.map((pred) => [pred.challenge.toString(), pred.confidence])
+      );
+
+      // Sort challenges: recommended first (by confidence), then by creation date
+      challengesWithProgress.sort((a, b) => {
+        const aConfidence = confidenceMap.get(a._id.toString()) || 0;
+        const bConfidence = confidenceMap.get(b._id.toString()) || 0;
+
+        // Higher confidence first
+        if (bConfidence !== aConfidence) {
+          return bConfidence - aConfidence;
+        }
+
+        // If same confidence, newer first
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    } catch (mlError) {
+      console.error("ML sorting error:", mlError);
+      // If ML fails, continue with default sorting
+    }
 
     res.json(challengesWithProgress);
   } catch (err) {
