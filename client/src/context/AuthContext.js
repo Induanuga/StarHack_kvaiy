@@ -1,80 +1,131 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['x-auth-token'] = token;
-      loadUser();
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const loadUser = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/users/me');
-      setUser(res.data);
-      setIsAuthenticated(true);
-    } catch (err) {
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['x-auth-token'];
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const login = async (credentials) => {
-    try {
-      const res = await axios.post('http://localhost:5000/api/users/login', credentials);
-      const { token } = res.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['x-auth-token'] = token;
-      await loadUser();
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const register = async (userData) => {
-    try {
-      const res = await axios.post('http://localhost:5000/api/users/register', userData);
-      const { token } = res.data;
-      localStorage.setItem('token', token);
-      axios.defaults.headers.common['x-auth-token'] = token;
-      await loadUser();
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['x-auth-token'];
-    setUser(null);
-    setIsAuthenticated(false);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+// Configure axios base URL
+const API_BASE_URL = "http://localhost:5000/api";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
 
-export default AuthProvider;
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [loading, setLoading] = useState(true);
+
+  // Create axios instance with base URL
+  const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  // Set auth token in headers if it exists
+  useEffect(() => {
+    if (token) {
+      api.defaults.headers.common["x-auth-token"] = token;
+    } else {
+      delete api.defaults.headers.common["x-auth-token"];
+    }
+  }, [token]);
+
+  // Register function - sends POST request to /api/users/register
+  const register = async (userData) => {
+    try {
+      console.log(
+        "Sending registration request to:",
+        `${API_BASE_URL}/users/register`
+      );
+      console.log("Registration data:", userData);
+
+      const response = await api.post("/users/register", userData);
+
+      console.log("Registration response:", response.data);
+
+      const { token: newToken, user: newUser } = response.data;
+
+      // Store token in localStorage
+      localStorage.setItem("token", newToken);
+      setToken(newToken);
+      setUser(newUser);
+
+      return response.data;
+    } catch (error) {
+      console.error("Registration error:", error);
+      console.error("Error response:", error.response?.data);
+      throw error;
+    }
+  };
+
+  // Login function - sends POST request to /api/users/login
+  const login = async (credentials) => {
+    try {
+      console.log("Sending login request to:", `${API_BASE_URL}/users/login`);
+      console.log("Login credentials:", { email: credentials.email });
+
+      const response = await api.post("/users/login", credentials);
+
+      console.log("Login response:", response.data);
+
+      const { token: newToken, user: newUser } = response.data;
+
+      // Store token in localStorage
+      localStorage.setItem("token", newToken);
+      setToken(newToken);
+      setUser(newUser);
+
+      return response.data;
+    } catch (error) {
+      console.error("Login error:", error);
+      console.error("Error response:", error.response?.data);
+      throw error;
+    }
+  };
+
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    delete api.defaults.headers.common["x-auth-token"];
+  };
+
+  // Load user from token
+  const loadUser = async () => {
+    if (token) {
+      try {
+        const response = await api.get("/users/me");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error loading user:", error);
+        logout();
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  const value = {
+    user,
+    token,
+    loading,
+    register,
+    login,
+    logout,
+    isAuthenticated: !!token && !!user,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export default AuthContext;

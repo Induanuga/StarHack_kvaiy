@@ -1,53 +1,77 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const challengeSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    enum: ["health", "wealth", "financial", "insurance", "aktivo", "social"],
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ["daily", "weekly", "monthly", "milestone", "community"],
+    default: "daily",
+  },
+  difficulty: {
+    type: String,
+    enum: ["easy", "medium", "hard", "expert"],
+    default: "medium",
+  },
+  points: {
+    type: Number,
+    required: true,
+    default: 10,
+  },
+  xpReward: {
+    type: Number,
+    default: 50,
+  },
+  target: {
+    type: Number,
+    required: true,
+  },
+  unit: {
+    type: String,
+    required: true,
+    default: "count",
+  },
+  icon: {
+    type: String,
+    default: "🎯",
+  },
+  color: {
+    type: String,
+    default: "#4CAF50",
+  },
+  startDate: {
+    type: Date,
+    default: Date.now,
+  },
+  endDate: {
+    type: Date,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  participants: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    description: String,
-    category: {
-        type: String,
-        enum: ['Health', 'Wealth', 'Financial', 'Social'],
-        required: true
-    },
-    type: {
-        type: String,
-        enum: ['Daily', 'Weekly', 'Monthly', 'Special'],
-        required: true
-    },
-    points: {
-        type: Number,
-        required: true
-    },
-    requirements: [{
-        type: String
-    }],
-    rewards: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reward'
-    }],
-    participants: [{
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        status: {
-            type: String,
-            enum: ['Active', 'Completed', 'Failed'],
-            default: 'Active'
-        },
-        progress: {
-            type: Number,
-            default: 0
-        }
-    }],
-    startDate: Date,
-    endDate: Date,
-    isActive: {
-        type: Boolean,
-        default: true
-    }
-}, { timestamps: true });
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-module.exports = mongoose.model('Challenge', challengeSchema);
+module.exports = mongoose.model("Challenge", challengeSchema);

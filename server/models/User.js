@@ -1,42 +1,115 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true
+const UserSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 20,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+  },
+  profile: {
+    firstName: String,
+    lastName: String,
+    avatar: String,
+    bio: String,
+    dateOfBirth: Date,
+    gender: String,
+    phone: String,
+  },
+  points: {
+    type: Number,
+    default: 0,
+  },
+  level: {
+    type: Number,
+    default: 1,
+  },
+  xp: {
+    type: Number,
+    default: 0,
+  },
+  streak: {
+    current: {
+      type: Number,
+      default: 0,
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true
+    longest: {
+      type: Number,
+      default: 0,
     },
-    password: {
-        type: String,
-        required: true
+    lastActivityDate: Date,
+  },
+  badges: [
+    {
+      type: String,
     },
-    profile: {
-        name: String,
-        avatar: String,
-        healthScore: { type: Number, default: 0 },
-        wealthScore: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
+  ],
+  stats: {
+    challengesCompleted: {
+      type: Number,
+      default: 0,
     },
-    achievements: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Achievement'
-    }],
-    rewards: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reward'
-    }],
-    dailyActivities: [{
-        date: Date,
-        activities: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Activity'
-        }]
-    }]
-}, { timestamps: true });
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
+    achievementsUnlocked: {
+      type: Number,
+      default: 0,
+    },
+    rewardsRedeemed: {
+      type: Number,
+      default: 0,
+    },
+  },
+  preferences: {
+    notifications: {
+      type: Boolean,
+      default: true,
+    },
+    publicProfile: {
+      type: Boolean,
+      default: true,
+    },
+    shareProgress: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  lastLoginAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", UserSchema);

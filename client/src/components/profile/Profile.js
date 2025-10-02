@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import './Profile.css';
+import React, { useState, useEffect } from "react";
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    name: '',
+    name: "",
     healthScore: 0,
     wealthScore: 0,
     level: 1,
-    achievements: []
+    achievements: [],
   });
 
   useEffect(() => {

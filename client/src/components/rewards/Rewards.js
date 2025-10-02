@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Rewards.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Rewards = () => {
   const [rewards, setRewards] = useState([]);
 
   const fetchRewards = async () => {
     try {
-      const response = await axios.get('/api/rewards');
+      const response = await axios.get("/api/rewards");
       setRewards(response.data);
     } catch (error) {
-      console.error('Error fetching rewards:', error);
+      console.error("Error fetching rewards:", error);
     }
   };
 
@@ -19,7 +18,7 @@ const Rewards = () => {
       await axios.post(`/api/rewards/claim/${rewardId}`);
       fetchRewards();
     } catch (error) {
-      console.error('Error claiming reward:', error);
+      console.error("Error claiming reward:", error);
     }
   };
 
@@ -40,7 +39,7 @@ const Rewards = () => {
               <span>Points: {reward.points}</span>
               <span>Type: {reward.type}</span>
             </div>
-            <button 
+            <button
               className="claim-btn"
               onClick={() => claimReward(reward._id)}
             >
